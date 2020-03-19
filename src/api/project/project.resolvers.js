@@ -30,6 +30,10 @@ module.exports = {
     id(project) {
       return project._id + ''
     },
-    // resolve some fields here
+    tasks(project, args, ctx) {
+      return ctx.models.task
+        .find({project: project._id})
+        .exec()
+    }
   }
 }

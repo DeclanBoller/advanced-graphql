@@ -18,7 +18,7 @@ const removeTask = async (_, args, ctx) => {
   const task = await ctx.models.task
     .findByIdAndRemove(args.id)
     .exec()
-  
+
   if (!task) {
     throw new Error('No resource')
   }
@@ -45,6 +45,16 @@ module.exports = {
     id(task) {
       return task._id + ''
     },
-    // resolve some fields here
+    // This is not the same as the project in the project.graphql file, this is a field on a task with separate assocs.
+    project(task, args, ctx) {
+      return ctx.models.project
+        .findById(task.project)
+        .exec()
+    },
+    parentTask(task, args, ctx) {
+      return ctx.models.task
+        .findById(task.parentTask)
+        .exec()
+    }
   }
 }
